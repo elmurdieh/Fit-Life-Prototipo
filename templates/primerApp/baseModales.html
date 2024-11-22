@@ -1,0 +1,146 @@
+<!--Modal Generar Equipo-->
+<div class="modal fade" id="modalPerfilEntrenador" tabindex="-1" aria-labelledby="modalPerfilEntrenadorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPerfilEntrenadorLabel">Generar Perfil de Entrenador</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px); overflow-y: auto;">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_nombre" class="form-label">Nombre </label>
+                        <input type="text" class="form-control" id="id_nombre" name="nombre" maxlength="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_rut" class="form-label">Rut</label>
+                        <input type="text" class="form-control" id="id_rut" name="rut" maxlength="15" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_rol" class="form-label">Rol</label>
+                        <input type="text" placeholder="entrenador" class="form-control" id="id_rol" name="rol" maxlength="30" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_fechaIngreso" class="form-label">Fecha de Ingreso</label>
+                        <input type="date" class="form-control" id="id_fechaIngreso" name="fechaIngreso" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_imgReferencia" class="form-label">Foto</label>
+                        <input type="file" class="form-control" id="id_imgReferencia" name="imgReferencia" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_bio" class="form-label">Bio</label>
+                        <textarea name="bio" class="form-control" id="id_bio" cols="40" rows="10"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success" name="submit_equipo" value="submit_equipo">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal Generar Clase Grupal-->
+<div class="modal fade" id="modalClaseGrupal" tabindex="-1" aria-labelledby="modalClaseGrupalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalClaseGrupalLabel">Generar Clase Grupal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px); overflow-y: auto;">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_nombre" class="form-label">Nombre de la clase</label>
+                        <input type="text" class="form-control" id="id_nombre" name="nombre" maxlength="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_descripcion" class="form-label">Descripcion</label>
+                        <textarea name="descripcion" id="id_descripcion" cols="40" rows="10" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_fecha_inicio" class="form-label">Fecha Inicio</label>
+                        <input type="date" class="form-control" id="id_fecha_inicio" name="fecha_Inicio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_fecha_fin" class="form-label">Fecha Fin</label>
+                        <input type="date" class="form-control" id="id_fecha_fin" name="fecha_Fin" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_hora_inicio" class="form-label">Hora Inicio</label>
+                        <input type="time" class="form-control" id="id_hora_inicio" name="hora_inicio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_hora_fin" class="form-label">Hora Fin</label>
+                        <input type="time" class="form-control" id="id_hora_fin" name="hora_fin" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_max_participantes" class="form-label">Maximo de Participantes</label>
+                        <input type="number" class="form-control" id="id_max_participantes" name="max_participantes" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_entrenador" class="form-label">Persona Acargo</label>
+                        <select name="entrenador" id="id_entrenador" class="form-select">
+                            {% for entrenador in entrenadores %}
+                            <option value="{{ entrenador.rut }}">{{ entrenador.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_lugar" class="form-label">lugar</label>
+                        <input type="text" class="form-control" id="id_lugar" name="lugar" required maxlength="100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_precio" class="form-label">precio</label>
+                        <input type="number" class="form-control" id="id_precio" name="precio" maxlength="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_imgReferencia" class="form-label">Imagen de Referencia</label>
+                        <input type="file" class="form-control" id="id_imgReferencia" name="imgReferencia" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-success" name="submit_clase_grupal" value="submit_clase_grupal">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal Generar Producto-->
+<div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalProductoLabel">Generar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px); overflow-y: auto;">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_nombre" class="form-label">Nombre del Producto</label>
+                        <input type="text" class="form-control" id="id_nombre" name="nombre" maxlength="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_descripcion" class="form-label">Descripcion</label>
+                        <textarea name="descripcion" id="id_descripcion" cols="40" rows="10" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_precio" class="form-label">precio</label>
+                        <input type="number" class="form-control" id="id_precio" name="precio" maxlength="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_stock" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="id_stock" name="stock" maxlength="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_imagen" class="form-label">Imagen de Referencia</label>
+                        <input type="file" class="form-control" id="id_imagen" name="imagen" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-success" name="submit_producto" value="submit_producto">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

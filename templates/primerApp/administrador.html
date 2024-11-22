@@ -1,0 +1,86 @@
+{% extends "baseAdministrador.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>Generar Servicio</h1>
+    <div class="container">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <img src="{% static 'img/group.jpg' %}" class="card-img-top" alt="grupo">
+                        <button type="button" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalClaseGrupal">
+                            Generar Clase Grupal
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <img src="{% static 'img/only.png' %}" class="card-img-top" alt="solo" style="object-fit: cover; width: 100%; height: 255px;">
+                        <button type="button" class="btn btn-secondary" disabled style="width: 100%;" data-bs-toggle="" data-bs-target="">
+                            Generar Clase Personalizada
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <img src="{% static 'img/bottle.png' %}" class="card-img-top" alt="botella">
+                        <button type="button" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalProducto">
+                            Generar Producto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <img src="{% static 'img/trainer.png' %}" class="card-img-top" alt="grupo">
+                        <!-- Botón que abre el modal -->
+                        <button type="button" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalPerfilEntrenador">
+                            Generar Perfil Mienbro del Equipo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h3>Clases Grupales</h3>
+    {% for claseGrupal in clasesGrupales %}
+    <div class="card" style="width: 18rem;">
+        <img src="{% static 'img/clasesGrupales/{{claseGrupal.imgReferencia}}' %}" class="card-img-top" alt="imagen">
+        <div class="card-body">
+          <h5 class="card-title">{{claseGrupal.nombre}}</h5>
+          <button class="btn btn-success" style="width: 100%;">Editar</button>
+          <button class="btn btn-danger" style="width: 100%;">Eliminar</button>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+<div class="container">
+    <h3>Integrantes Fit-life</h3>
+    {% for persona in personal %}
+    <div class="card" style="width: 18rem;">
+        <img src="{{ persona.imgReferencia.url }}" class="card-img-top" alt="imagen">
+        <div class="card-body">
+          <h5 class="card-title">{{persona.nombre}}</h5>
+          <button class="btn btn-success" style="width: 100%;">Editar</button>
+          <button class="btn btn-danger" style="width: 100%;">Eliminar</button>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+    
+    {% include 'primerApp/baseModales.html' %}
+
+{% endblock %}
