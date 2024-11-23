@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
-from primerApp.models import administrador, equipo, claseGrupal
+from primerApp.models import administrador, equipo, claseGrupal, producto
 from primerApp.forms import formAdministrador,formEquipo,formClaseGrupal, formProducto
 
 def index(request):
@@ -41,6 +41,11 @@ def inicioSesion(request):
     
     return render(request, 'primerApp/inicioSesion.html')
 
+def cerrarSesion(request):
+    if 'usuario_id' in request.session:
+        request.session.flush()
+    return redirect('/')
+
 
 def ventanaAdministrador(request, rut):
     if not request.session.get('usuario_id'):
@@ -58,6 +63,7 @@ def ventanaAdministrador(request, rut):
         entrenadores = equipo.objects.filter(rol="entrenador")
         clasesGrupales = claseGrupal.objects.all()
         personal = equipo.objects.all()
+        productos = producto.objects.all()
 
         if request.method == 'POST':
             if 'submit_equipo' in request.POST:
@@ -70,7 +76,8 @@ def ventanaAdministrador(request, rut):
                     print("Error al crear el perfil del equipo. Verifique los datos.")
                     print(form_equipo.errors)
             elif 'submit_clase_grupal' in request.POST:
-                form_clase_grupal = formClaseGrupal(request.POST)
+                form_clase_grupal = formClaseGrupal(request.POST, request.FILES)
+                print("Archivos recibidos:", request.FILES)
                 if form_clase_grupal.is_valid():
                     form_clase_grupal.save()
                     print("Clase grupal creada exitosamente.")
@@ -79,14 +86,15 @@ def ventanaAdministrador(request, rut):
                     print("Error al crear la clase grupal. Verifique los datos.")
                     print(form_clase_grupal.errors)
             elif 'submit_producto' in request.POST:
-                form_producto = formProducto(request.POST)
+                form_producto = formProducto(request.POST, request.FILES)
+                print("Archivos recibidos:", request.FILES)
                 if form_producto.is_valid():
                     form_producto.save()
                     print("Producto creado exitosamente.")
                     return redirect(f'/administrar/{usuario.rut}/')
                 else:
                     print("Error al crear el producto. Verifique los datos.")
-                    print(form_producto.errors)
+                    print("Errores del formulario de producto:", form_producto.errors)
 
         # Datos que se pasarán al template
         data = {
@@ -97,9 +105,34 @@ def ventanaAdministrador(request, rut):
             'entrenadores': entrenadores,
             'clasesGrupales': clasesGrupales,
             'personal' : personal,
+            'productos' : productos
         }
     except administrador.DoesNotExist:
-        print("Usuario no encontrado.")  # Mensaje de error en consola
+        print("Usuario no encontrado.")
         return redirect('/inicio_de_Sesion/')
 
     return render(request, 'primerApp/administrador.html', data)
+
+def actualizarCG(request, id):
+    # Obtener la clase grupal que se va a editar
+    clase = claseGrupal.objects.get(id=id)
+    form = formClaseGrupal(instance=clase)
+
+    if request.method == 'POST':
+        form = formClaseGrupal(request.POST, instance=clase)
+        if form.is_valid():
+            form.save()
+            return redirect(f'/administrar/{request.session.get("usuario_rut")}/')  # Redirigir a la vista del administrador
+
+    # Pasar el formulario al template para su edición
+    data = {'formCG': form}
+    return render(request, 'primerApp/editar_clase_grupal.html', data)
+
+def eliminarCG(request, id):
+    if not request.session.get('usuario_id'):
+        return redirect('/inicio_de_Sesion/')
+        
+    clase = claseGrupal.objects.get(id=id)
+    usuario = administrador.objects.get(id=request.session['usuario_id'])
+    clase.delete()
+    return redirect(f'/administrar/{usuario.rut}/')

@@ -1,5 +1,6 @@
 from django.db import models
-from django.shortcuts import get_object_or_404
+import random
+import string
 
 # Create your models here.
 
@@ -36,7 +37,7 @@ class claseGrupal(models.Model):
     )  
     lugar = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    imgReferencia = models.ImageField(upload_to='static/img/clasesGrupales/',blank=True, null=True)
+    imgCG = models.ImageField(upload_to='static/img/clasesGrupales/',blank=True, null=True)
     archivar = models.BooleanField(default=False)
 
 class solicitudCG(models.Model):
@@ -54,6 +55,20 @@ class solicitudCG(models.Model):
     acepta_uso_imagen = models.BooleanField(default=False)
     estado = models.BooleanField(default=False)  # False para "pendiente", True para "aceptada"
     fechaSolicitud = models.DateTimeField(auto_now_add=True)
+    codigo = models.CharField(max_length=5, unique=True, editable=False)
+
+    #generar codigo aleatorio para el campo codigo
+    def save(self, *args, **kwargs):
+        if not self.codigo:
+            self.codigo = self._generate_codigo()
+        super().save(*args, **kwargs)
+
+    def _generate_codigo(self):
+        characters = string.ascii_letters + string.digits  # Letras mayúsculas, minúsculas y números
+        while True:
+            code = ''.join(random.choices(characters, k=5))  # Genera un código de 5 caracteres
+            if not solicitudCG.objects.filter(codigo=code).exists():  # Verifica unicidad
+                return code 
 
 class solicitudEP(models.Model):
     pass
@@ -77,8 +92,8 @@ class producto(models.Model):
     descripcion = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     stock = models.PositiveIntegerField(default=1)
-    imagen = models.ImageField(upload_to="static/img/productos/", blank=True, null=True)
-    disponible = models.BooleanField(default=True)
+    imgPro = models.ImageField(upload_to="static/img/productos/")
+    disponible = models.BooleanField(default=1)
 
 class renta(models.Model):
     pass

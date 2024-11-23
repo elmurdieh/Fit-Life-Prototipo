@@ -24,4 +24,7 @@ urlpatterns = [
     path('registro/', views1.registrar),
     path('inicio_de_Sesion/', views1.inicioSesion),
     path('administrar/<str:rut>/', views1.ventanaAdministrador, name='ventana_administrador'),
+    path('cerrar_sesion/', views1.cerrarSesion,name='cerrar_sesion'),
+    path('actualizar_clase_grupal/<int:id>/', views1.actualizarCG, name='actualizarCG'),
+    path('eliminar_clase_grupal/<int:id>/', views1.eliminarCG, name='eliminarCG'),
 ]

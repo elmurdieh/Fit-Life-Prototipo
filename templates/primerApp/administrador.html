@@ -58,11 +58,26 @@
     <h3>Clases Grupales</h3>
     {% for claseGrupal in clasesGrupales %}
     <div class="card" style="width: 18rem;">
-        <img src="{% static 'img/clasesGrupales/{{claseGrupal.imgReferencia}}' %}" class="card-img-top" alt="imagen">
         <div class="card-body">
-          <h5 class="card-title">{{claseGrupal.nombre}}</h5>
-          <button class="btn btn-success" style="width: 100%;">Editar</button>
-          <button class="btn btn-danger" style="width: 100%;">Eliminar</button>
+            <img src="{{ claseGrupal.imgCG.url }}" class="card-img-top" alt="imagen">
+            <h5 class="card-title">{{claseGrupal.nombre}}</h5>
+            <button class="btn btn-success mt-1" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalEditarClase{{ claseGrupal.id }}">Editar</button>
+            <button class="btn btn-secondary mt-1" style="width: 100%;">Archivar</button>
+            <button class="btn btn-danger mt-1" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalEliminarCG{{ claseGrupal.id }}">Eliminar</button>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+<div class="container">
+    <h3>Productos Fit-Life</h3>
+    {% for producto in productos %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <img src="{{ producto.imgPro.url }}" class="card-img-top" alt="imagen">
+            <h5 class="card-title">{{producto.nombre}}</h5>
+            <button class="btn btn-success mt-1" style="width: 100%;">Editar</button>
+            <button class="btn btn-secondary mt-1" style="width: 100%;">Archivar</button>
+            <button class="btn btn-danger mt-1" style="width: 100%;">Eliminar</button>
         </div>
       </div>
     {% endfor %}
@@ -71,16 +86,16 @@
     <h3>Integrantes Fit-life</h3>
     {% for persona in personal %}
     <div class="card" style="width: 18rem;">
-        <img src="{{ persona.imgReferencia.url }}" class="card-img-top" alt="imagen">
         <div class="card-body">
-          <h5 class="card-title">{{persona.nombre}}</h5>
-          <button class="btn btn-success" style="width: 100%;">Editar</button>
-          <button class="btn btn-danger" style="width: 100%;">Eliminar</button>
+            <img src="{{ persona.imgReferencia.url }}" class="card-img-top" alt="imagen">
+            <h5 class="card-title">{{persona.nombre}}</h5>
+            <button class="btn btn-success mt-1 " style="width: 100%;">Editar</button>
+            <button class="btn btn-danger mt-1" style="width: 100%;">Eliminar</button>
         </div>
       </div>
     {% endfor %}
 </div>
-    
+    <!-- aca se cargan todo del baseModales.html para no sobresaturar esta interfaz -->
     {% include 'primerApp/baseModales.html' %}
 
 {% endblock %}

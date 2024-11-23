@@ -1,3 +1,6 @@
+<!--Aca Estan todos los modales de cada "generar x cuestion"-->
+
+
 <!--Modal Generar Equipo-->
 <div class="modal fade" id="modalPerfilEntrenador" tabindex="-1" aria-labelledby="modalPerfilEntrenadorLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -96,8 +99,8 @@
                         <input type="number" class="form-control" id="id_precio" name="precio" maxlength="10" required>
                     </div>
                     <div class="mb-3">
-                        <label for="id_imgReferencia" class="form-label">Imagen de Referencia</label>
-                        <input type="file" class="form-control" id="id_imgReferencia" name="imgReferencia" accept="image/*" required>
+                        <label for="id_imgCG" class="form-label">Imagen de Referencia</label>
+                        <input type="file" class="form-control" id="id_imgCG" name="imgCG" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn btn-success" name="submit_clase_grupal" value="submit_clase_grupal">Guardar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -134,8 +137,8 @@
                         <input type="number" class="form-control" id="id_stock" name="stock" maxlength="10" required>
                     </div>
                     <div class="mb-3">
-                        <label for="id_imagen" class="form-label">Imagen de Referencia</label>
-                        <input type="file" class="form-control" id="id_imagen" name="imagen" accept="image/*" required>
+                        <label for="id_imgPro" class="form-label">imagen del Producto</label>
+                        <input type="file" class="form-control" id="id_imgPro" name="imgPro" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn btn-success" name="submit_producto" value="submit_producto">Guardar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -144,3 +147,89 @@
         </div>
     </div>
 </div>
+<!--Modal Para Editar cada card del tipo clase grupal tanto las fechas como las horas no logran recuperarse para que se vieran bien en el modal-->
+{% for claseGrupal in clasesGrupales %}
+<div class="modal fade" id="modalEditarClase{{ claseGrupal.id }}" tabindex="-1" aria-labelledby="modalEditarClaseLabel{{ claseGrupal.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarClaseLabel{{ claseGrupal.id }}">Editar {{claseGrupal.nombre}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px); overflow-y: auto;">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ claseGrupal.id }}">
+                    <div class="mb-3">
+                        <label for="nombre-{{ claseGrupal.id }}" class="form-label">Nombre de la clase</label>
+                        <input type="text" class="form-control" id="nombre-{{ claseGrupal.id }}" name="nombre" value="{{ claseGrupal.nombre }}" maxlength="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion-{{ claseGrupal.id }}" class="form-label">Descripción</label>
+                        <textarea name="descripcion" id="descripcion-{{ claseGrupal.id }}" cols="40" rows="10" class="form-control">{{ claseGrupal.descripcion }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_inicio-{{ claseGrupal.id }}" class="form-label">Fecha Inicio</label>
+                        <input type="date" class="form-control" id="fecha_inicio-{{ claseGrupal.id }}" name="fecha_inicio" value="{{ claseGrupal.fecha_Inicio }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_fin-{{ claseGrupal.id }}" class="form-label">Fecha Fin</label>
+                        <input type="date" class="form-control" id="fecha_fin-{{ claseGrupal.id }}" name="fecha_fin" value="{{ claseGrupal.fecha_Fin }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hora_inicio-{{ claseGrupal.id }}" class="form-label">Hora Inicio</label>
+                        <input type="time" class="form-control" id="hora_inicio-{{ claseGrupal.id }}" name="hora_inicio" value="{{ claseGrupal.hora_inicio }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hora_fin-{{ claseGrupal.id }}" class="form-label">Hora Fin</label>
+                        <input type="time" class="form-control" id="hora_fin-{{ claseGrupal.id }}" name="hora_fin" value="{{ claseGrupal.hora_fin }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="max_participantes-{{ claseGrupal.id }}" class="form-label">Máximo de Participantes</label>
+                        <input type="number" class="form-control" id="max_participantes-{{ claseGrupal.id }}" name="max_participantes" value="{{ claseGrupal.max_participantes }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="entrenador-{{ claseGrupal.id }}" class="form-label">Persona a Cargo</label>
+                        <select name="entrenador" id="entrenador-{{ claseGrupal.id }}" class="form-select">
+                            {% for entrenador in entrenadores %}
+                            <option value="{{ entrenador.rut }}" {% if entrenador.rut == claseGrupal.entrenador.rut %}selected{% endif %}>{{ entrenador.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lugar-{{ claseGrupal.id }}" class="form-label">Lugar</label>
+                        <input type="text" class="form-control" id="lugar-{{ claseGrupal.id }}" name="lugar" value="{{ claseGrupal.lugar }}" maxlength="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio-{{ claseGrupal.id }}" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="precio-{{ claseGrupal.id }}" name="precio" value="{{ claseGrupal.precio }}" maxlength="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imgCG-{{ claseGrupal.id }}" class="form-label">Imagen de Referencia</label>
+                        <input type="file" class="form-control" id="imgCG-{{ claseGrupal.id }}" name="imgCG" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="submit_editar_clase_grupal" value="editar_clase">Guardar Cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalEliminarCG{{ claseGrupal.id }}" tabindex="-1" aria-labelledby="modalEliminarCGLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarCGLabel">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de eliminar a <strong>{{ claseGrupal.nombre }}</strong>?
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'eliminarCG' claseGrupal.id %}" class="btn btn-danger">Eliminar</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
