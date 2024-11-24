@@ -27,4 +27,8 @@ urlpatterns = [
     path('cerrar_sesion/', views1.cerrarSesion,name='cerrar_sesion'),
     path('actualizar_clase_grupal/<int:id>/', views1.actualizarCG, name='actualizarCG'),
     path('eliminar_clase_grupal/<int:id>/', views1.eliminarCG, name='eliminarCG'),
+    path('actualizar_Pro/<int:id>/', views1.actualizarPro, name='actualizarPro'),
+    path('eliminar_Pro/<int:id>/', views1.eliminarPro, name='eliminarPro'),
+    path('actualizar_equipo/<str:rut>/', views1.actualizarEquipo, name='actualizarEquipo'),
+path('eliminar_equipo/<str:rut>/', views1.eliminarEquipo, name='eliminarEquipo'),
 ]

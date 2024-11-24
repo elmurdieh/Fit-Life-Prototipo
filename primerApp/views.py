@@ -114,19 +114,23 @@ def ventanaAdministrador(request, rut):
     return render(request, 'primerApp/administrador.html', data)
 
 def actualizarCG(request, id):
-    # Obtener la clase grupal que se va a editar
+    if not request.session.get('usuario_id'):
+        return redirect('/inicio_de_Sesion/')
+        
     clase = claseGrupal.objects.get(id=id)
-    form = formClaseGrupal(instance=clase)
-
+    usuario = administrador.objects.get(id=request.session['usuario_id'])
+    
     if request.method == 'POST':
-        form = formClaseGrupal(request.POST, instance=clase)
+        form = formClaseGrupal(request.POST, request.FILES, instance=clase)
+        print("POST data:", request.POST)  # Para ver qué datos están llegando
+        print("Form errors:", form.errors)  # Para ver si hay errores en el formulario
         if form.is_valid():
             form.save()
-            return redirect(f'/administrar/{request.session.get("usuario_rut")}/')  # Redirigir a la vista del administrador
-
-    # Pasar el formulario al template para su edición
-    data = {'formCG': form}
-    return render(request, 'primerApp/editar_clase_grupal.html', data)
+            return redirect(f'/administrar/{usuario.rut}/')
+        else:
+            print("Form is not valid")
+    
+    return redirect(f'/administrar/{usuario.rut}/')
 
 def eliminarCG(request, id):
     if not request.session.get('usuario_id'):
@@ -135,4 +139,55 @@ def eliminarCG(request, id):
     clase = claseGrupal.objects.get(id=id)
     usuario = administrador.objects.get(id=request.session['usuario_id'])
     clase.delete()
+    return redirect(f'/administrar/{usuario.rut}/')
+
+def actualizarPro(request, id):
+    if not request.session.get('usuario_id'):
+        return redirect('/inicio_de_Sesion/')
+        
+    pro = producto.objects.get(id=id)
+    usuario = administrador.objects.get(id=request.session['usuario_id'])
+    
+    if request.method == 'POST':
+        formPro = formProducto(request.POST, request.FILES, instance=pro)
+        if formPro.is_valid():
+            formPro.save()
+            return redirect(f'/administrar/{usuario.rut}/')
+    else:
+        formPro = formProducto(instance=pro)
+    
+    data = {'formPro': formPro}
+    return render(request, 'primerApp/editar_producto.html', data)
+
+def eliminarPro(request, id):
+    if not request.session.get('usuario_id'):
+        return redirect('/inicio_de_Sesion/')
+        
+    pro = producto.objects.get(id=id)
+    usuario = administrador.objects.get(id=request.session['usuario_id'])
+    pro.delete()
+    return redirect(f'/administrar/{usuario.rut}/')
+
+def actualizarEquipo(request, rut):
+    if not request.session.get('usuario_id'):
+        return redirect('/inicio_de_Sesion/')
+        
+    miembro = equipo.objects.get(rut=rut)
+    usuario = administrador.objects.get(id=request.session['usuario_id'])
+    
+    if request.method == 'POST':
+        form = formEquipo(request.POST, request.FILES, instance=miembro)
+        if form.is_valid():
+            form.save()
+            return redirect(f'/administrar/{usuario.rut}/')
+    
+    return redirect(f'/administrar/{usuario.rut}/')
+
+def eliminarEquipo(request, rut):
+    if not request.session.get('usuario_id'):
+        return redirect('/inicio_de_Sesion/')
+        
+    miembro = equipo.objects.get(rut=rut)
+    usuario = administrador.objects.get(id=request.session['usuario_id'])
+    miembro.delete()
     return redirect(f'/administrar/{usuario.rut}/')

@@ -75,9 +75,9 @@
         <div class="card-body">
             <img src="{{ producto.imgPro.url }}" class="card-img-top" alt="imagen">
             <h5 class="card-title">{{producto.nombre}}</h5>
-            <button class="btn btn-success mt-1" style="width: 100%;">Editar</button>
+            <button class="btn btn-success mt-1" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalEditarPro{{ producto.id }}">Editar</button>
             <button class="btn btn-secondary mt-1" style="width: 100%;">Archivar</button>
-            <button class="btn btn-danger mt-1" style="width: 100%;">Eliminar</button>
+            <button class="btn btn-danger mt-1" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalEliminarPro{{ producto.id }}">Eliminar</button>
         </div>
       </div>
     {% endfor %}
@@ -89,10 +89,10 @@
         <div class="card-body">
             <img src="{{ persona.imgReferencia.url }}" class="card-img-top" alt="imagen">
             <h5 class="card-title">{{persona.nombre}}</h5>
-            <button class="btn btn-success mt-1 " style="width: 100%;">Editar</button>
-            <button class="btn btn-danger mt-1" style="width: 100%;">Eliminar</button>
+            <button class="btn btn-success mt-1" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalEditarEquipo{{ persona.rut|cut:'-' }}">Editar</button>
+            <button class="btn btn-danger mt-1" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#modalEliminarEquipo{{ persona.rut|cut:'-' }}">Eliminar</button>
         </div>
-      </div>
+    </div>
     {% endfor %}
 </div>
     <!-- aca se cargan todo del baseModales.html para no sobresaturar esta interfaz -->
